@@ -31,6 +31,7 @@ import org.jboss.gravia.container.tomcat.WebAppContextListener;
 import org.jboss.gravia.resource.Attachable;
 import org.jboss.gravia.runtime.Module;
 import org.jboss.gravia.runtime.embedded.internal.EmbeddedRuntime;
+import org.jboss.gravia.runtime.spi.ClassLoaderEntriesProvider;
 import org.jboss.gravia.runtime.spi.ModuleEntriesProvider;
 import org.jboss.gravia.runtime.spi.PropertiesProvider;
 import org.jboss.gravia.runtime.spi.URLStreamHandlerTracker;
@@ -67,8 +68,7 @@ public class TomcatRuntime extends EmbeddedRuntime {
 
     @Override
     protected ModuleEntriesProvider getDefaultEntriesProvider(Module module, Attachable context) {
-        ServletContext servletContext = context.getAttachment(WebAppContextListener.SERVLET_CONTEXT_KEY);
-        return servletContext != null ? new ServletContextEntriesProvider(servletContext) : null;
+        return new ClassLoaderEntriesProvider(module);
     }
 
     public Path getCatalinaHome() {
